@@ -1,4 +1,4 @@
-package com.dev.kayo.JiujitsuAcademy.Enums;
+package com.dev.kayo.JiujitsuAcademy.enums;
 
 public enum Matricula {
 
