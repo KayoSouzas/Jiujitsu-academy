@@ -1,7 +1,6 @@
-package com.dev.kayo.JiujitsuAcademy.Entity;
+package com.dev.kayo.JiujitsuAcademy.entity;
 
-import com.dev.kayo.JiujitsuAcademy.Enums.Faixa;
-import jakarta.annotation.Nullable;
+import com.dev.kayo.JiujitsuAcademy.enums.Faixa;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -28,7 +27,7 @@ public class Professor {
 
     @NotNull
     @Column(name = "idade", nullable = false)
-    private int idade;
+    private Integer idade;
 
     @NotNull
     @Email
@@ -36,7 +35,8 @@ public class Professor {
     private String email;
 
     @NotNull
+    @Enumerated(EnumType.STRING)
     @Column(name = "faixa_atual", nullable = false)
-    private Faixa faixaAual;
+    private Faixa faixaAtual;
 
 }

@@ -1,7 +1,7 @@
-package com.dev.kayo.JiujitsuAcademy.Entity;
+package com.dev.kayo.JiujitsuAcademy.entity;
 
-import com.dev.kayo.JiujitsuAcademy.Enums.Faixa;
-import com.dev.kayo.JiujitsuAcademy.Enums.Matricula;
+import com.dev.kayo.JiujitsuAcademy.enums.Faixa;
+import com.dev.kayo.JiujitsuAcademy.enums.Matricula;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -11,6 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -52,5 +53,12 @@ public class Aluno {
     @Column(name = "matricula", nullable = false)
     private Matricula matricula;
 
+    @ManyToMany
+    @JoinTable(
+            name = "aluno_turma",
+            joinColumns = @JoinColumn(name = "aluno_id"),
+            inverseJoinColumns = @JoinColumn(name = "turma_id")
+    )
+    private List<Turma> turma;
 
 }
