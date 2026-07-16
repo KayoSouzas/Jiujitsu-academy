@@ -10,5 +10,5 @@ public record AlunoRequest(
         @NotNull @NotBlank String nome,
         @Email @NotBlank String email,
         @Positive @NotNull int idade,
-        @NotNull Faixa faixa) {
+        @NotNull Faixa faixaAtual) {
 }
