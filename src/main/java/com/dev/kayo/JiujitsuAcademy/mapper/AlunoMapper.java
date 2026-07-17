@@ -26,6 +26,7 @@ public class AlunoMapper {
     public static AlunoResponse toAlunoResponse(Aluno aluno) {
 
         return AlunoResponse.builder()
+                .id(aluno.getId())
                 .nome(aluno.getNome())
                 .idade(aluno.getIdade())
                 .email(aluno.getEmail())

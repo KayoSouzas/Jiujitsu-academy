@@ -9,12 +9,13 @@ import jakarta.validation.constraints.Positive;
 import java.time.LocalTime;
 
 public record TurmaRequest(
+        @Positive Long id,
        @NotNull @NotBlank String nome,
        @NotNull DiaSemana diaSemana,
        @NotNull LocalTime horarioInicio,
        @NotNull LocalTime horarioFim,
        @NotNull @Positive Integer capacidadeMaxima,
-       @NotNull Professor professor
+       @NotNull Long professorId
 
 ) {
 }

@@ -12,7 +12,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Builder
 @Data
@@ -55,12 +56,7 @@ public class Aluno {
     @Column(name = "matricula", nullable = false)
     private Matricula matricula;
 
-    @ManyToMany
-    @JoinTable(
-            name = "aluno_turma",
-            joinColumns = @JoinColumn(name = "aluno_id"),
-            inverseJoinColumns = @JoinColumn(name = "turma_id")
-    )
-    private List<Turma> turma;
+    @ManyToMany(mappedBy = "alunos")
+    private Set<Turma> turmas = new HashSet<>();
 
 }

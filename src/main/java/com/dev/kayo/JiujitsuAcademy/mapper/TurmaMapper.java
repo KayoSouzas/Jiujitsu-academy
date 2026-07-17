@@ -14,7 +14,6 @@ public class TurmaMapper {
                 .horarioFim(request.horarioFim())
                 .capacidadeMaxima(request.capacidadeMaxima())
                 .horarioInicio(request.horarioInicio())
-                .professor(request.professor())
                 .diaSemana(request.diaSemana())
                 .build();
 
@@ -23,14 +22,16 @@ public class TurmaMapper {
     public static TurmaResponse toTurmaResponse(Turma turma) {
 
         return TurmaResponse.builder()
+                .id(turma.getId())
                 .nome(turma.getNome())
                 .horarioFim(turma.getHorarioFim())
                 .capacidadeMaxima(turma.getCapacidadeMaxima())
-                .horrarioInicio(turma.getHorarioInicio())
+                .horarioInicio(turma.getHorarioInicio())
                 .professor(turma.getProfessor())
                 .diaSemana(turma.getDiaSemana())
-
-
+                .alunos(turma.getAlunos().stream()
+                        .map(AlunoMapper::toAlunoResponse)
+                        .toList())
                 .build();
 
     }

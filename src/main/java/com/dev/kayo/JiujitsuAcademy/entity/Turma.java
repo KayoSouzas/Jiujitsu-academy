@@ -10,6 +10,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Builder
 @Data
@@ -46,10 +48,18 @@ public class Turma {
     @Column(name = "capacidade_maxima")
     private Integer capacidadeMaxima;
 
-    @NotNull
+
     @ManyToOne
     @JoinColumn(name = "professor_id", nullable = false)
     private Professor professor;
 
+
+    @ManyToMany
+    @JoinTable(
+            name = "aluno_turma",
+            joinColumns = @JoinColumn(name = "turma_id"),
+            inverseJoinColumns = @JoinColumn(name = "aluno_id")
+    )
+    private Set<Aluno> alunos = new HashSet<>();
 
 }

@@ -10,10 +10,10 @@ import lombok.Builder;
 
 @Builder
 public record AlunoResponse(
+        @Positive @NotNull Long id,
         @NotNull @NotBlank String nome,
         @NotNull @Positive int idade,
         @NotNull Faixa faixaAtual,
-        @Positive @NotNull Long id,
         @NotNull @Email String email,
         @NotNull Matricula matricula
 ) {
