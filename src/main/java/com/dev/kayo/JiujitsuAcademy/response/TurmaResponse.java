@@ -18,8 +18,8 @@ public record TurmaResponse(
         @NotNull LocalTime horarioInicio,
         @NotNull LocalTime horarioFim,
         @NotNull @Positive Integer capacidadeMaxima,
-        @NotNull Professor professor,
         @NotNull DiaSemana diaSemana,
-        List<AlunoResponse> alunos
+        @NotNull ProfessorResumoResponse professor,
+        List<AlunoResumoResponse> alunos
 ) {
 }
