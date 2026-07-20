@@ -3,14 +3,15 @@ package com.dev.kayo.JiujitsuAcademy.service;
 import com.dev.kayo.JiujitsuAcademy.entity.Aluno;
 import com.dev.kayo.JiujitsuAcademy.entity.Professor;
 import com.dev.kayo.JiujitsuAcademy.entity.Turma;
+import com.dev.kayo.JiujitsuAcademy.exceptions.TurmaDuplicadaException;
+import com.dev.kayo.JiujitsuAcademy.exceptions.TurmaNaoEncontradaException;
 import com.dev.kayo.JiujitsuAcademy.mapper.TurmaMapper;
 import com.dev.kayo.JiujitsuAcademy.repository.AlunoRepository;
 import com.dev.kayo.JiujitsuAcademy.repository.ProfessorRepository;
 import com.dev.kayo.JiujitsuAcademy.repository.TurmaRepository;
 import com.dev.kayo.JiujitsuAcademy.request.TurmaRequest;
-import com.sun.jdi.request.DuplicateRequestException;
+import com.dev.kayo.JiujitsuAcademy.response.TurmaResponse;
 import jakarta.persistence.EntityNotFoundException;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,7 +38,7 @@ public class TurmaService {
         boolean jaExiste = turmaRepository.existsByProfessorAndDiaSemanaAndHorarioInicio(professor, request.diaSemana(), request.horarioInicio());
 
         if (jaExiste) {
-            throw new DuplicateRequestException("Você não pode cadastrar duas turmas iguais.");
+            throw new TurmaDuplicadaException("Você não pode criar turmas iguais");
         }
 
         Turma turma = TurmaMapper.toTurma(request);
@@ -46,13 +47,15 @@ public class TurmaService {
 
     }
 
-    public List<Turma> findAll() {
-        return turmaRepository.findAll();
+    public List<TurmaResponse> findAll() {
+        List<Turma> turmas = turmaRepository.findAll();
+
+        return turmas.stream()
+                .map(TurmaMapper::toTurmaResponse).toList();
     }
 
-
     public Turma findById(Long id) {
-        return turmaRepository.findById(id).orElse(null);
+        return turmaRepository.findById(id).orElseThrow(() -> new TurmaNaoEncontradaException("Turma não encontrada"));
 
     }
 
@@ -78,28 +81,26 @@ public class TurmaService {
         }
         return Optional.empty();
 
-
     }
-
 
     public void delete(Long id) {
         turmaRepository.deleteById(id);
 
     }
 
-    public Turma matricularAluno(Long turmaID, Long alunoID){
+    public Turma matricularAluno(Long turmaID, Long alunoID) {
 
         Turma turma = turmaRepository.findById(turmaID).orElseThrow(() -> new EntityNotFoundException("Turma não encontrada"));
 
         Aluno aluno = alunoRepository.findById(alunoID).orElseThrow(() -> new EntityNotFoundException("Aluno não encontrado"));
 
-        if(turma.getAlunos().contains(aluno)){
-            throw new IllegalStateException();
+        if (turma.getAlunos().contains(aluno)) {
+            throw new IllegalStateException("Aluno já matriculado nessa turma");
 
         }
-        if (aluno.getTurmas().contains(turma)){
+        if (aluno.getTurmas().contains(turma)) {
 
-            throw new IllegalStateException();
+            throw new IllegalStateException("Você não pode duplicar matriculas nas turmas.");
         }
 
         turma.getAlunos().add(aluno);

@@ -1,7 +1,10 @@
 package com.dev.kayo.JiujitsuAcademy.service;
 
 import com.dev.kayo.JiujitsuAcademy.entity.Professor;
+import com.dev.kayo.JiujitsuAcademy.exceptions.ProfessorNãoEncontradoException;
+import com.dev.kayo.JiujitsuAcademy.mapper.ProfessorMapper;
 import com.dev.kayo.JiujitsuAcademy.repository.ProfessorRepository;
+import com.dev.kayo.JiujitsuAcademy.response.ProfessorResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,13 +20,16 @@ public class ProfessorService {
     }
 
 
-    public List<Professor> findAll() {
-        return professorRepository.findAll();
+    public List<ProfessorResponse> findAll() {
+        List<Professor> professores = professorRepository.findAll();
+        return ProfessorMapper.toProfessorResponse(professores);
 
     }
 
-    public Optional<Professor> findById(Long id) {
-        return professorRepository.findById(id);
+    public ProfessorResponse findById(Long id) {
+        Professor professor = professorRepository.findById(id).orElseThrow(() -> new ProfessorNãoEncontradoException("Professor não encontrado"));
+
+        return ProfessorMapper.toProfessorResponse(professor);
 
     }
 

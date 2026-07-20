@@ -1,7 +1,9 @@
 package com.dev.kayo.JiujitsuAcademy.service;
 
 import com.dev.kayo.JiujitsuAcademy.entity.Aluno;
+import com.dev.kayo.JiujitsuAcademy.mapper.AlunoMapper;
 import com.dev.kayo.JiujitsuAcademy.repository.AlunoRepository;
+import com.dev.kayo.JiujitsuAcademy.response.AlunoResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,11 +18,15 @@ public class AlunoService {
         this.alunoRepository = alunoRepository;
     }
 
-    public List<Aluno> findAll() {
-        return alunoRepository.findAll();
+    public List<AlunoResponse> findAll() {
+        List<Aluno> alunos = alunoRepository.findAll();
+        return AlunoMapper.toAlunoResponse(alunos);
 
     }
+    /**
 
+     Busca aluno no repositorio.*
+     @return  Aluno com o id passado*/
     public Aluno findById(Long id) {
         return alunoRepository.findById(id).orElse(null);
 
@@ -50,7 +56,7 @@ public class AlunoService {
             aluno.setIdade(updateAluno.getIdade());
 
             alunoRepository.save(aluno);
-            Optional.of(aluno);
+            return Optional.of(aluno);
         }
         return Optional.empty();
     }
