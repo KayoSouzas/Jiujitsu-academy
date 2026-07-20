@@ -1,7 +1,10 @@
 package com.dev.kayo.JiujitsuAcademy.controller;
 
+import com.dev.kayo.JiujitsuAcademy.entity.Professor;
 import com.dev.kayo.JiujitsuAcademy.entity.Turma;
+import com.dev.kayo.JiujitsuAcademy.exceptions.ProfessorNãoEncontradoException;
 import com.dev.kayo.JiujitsuAcademy.mapper.TurmaMapper;
+import com.dev.kayo.JiujitsuAcademy.repository.ProfessorRepository;
 import com.dev.kayo.JiujitsuAcademy.repository.TurmaRepository;
 import com.dev.kayo.JiujitsuAcademy.request.TurmaRequest;
 import com.dev.kayo.JiujitsuAcademy.response.TurmaResponse;
@@ -18,10 +21,12 @@ import java.util.Optional;
 @RequestMapping("/turma")
 public class TurmaController {
 
+    private final ProfessorRepository professorRepository;
     private final TurmaRepository turmaRepository;
     private final TurmaService turmaService;
 
-    public TurmaController(TurmaRepository turmaRepository, TurmaService turmaService) {
+    public TurmaController(ProfessorRepository professorRepository, TurmaRepository turmaRepository, TurmaService turmaService) {
+        this.professorRepository = professorRepository;
         this.turmaRepository = turmaRepository;
         this.turmaService = turmaService;
     }
@@ -47,7 +52,7 @@ public class TurmaController {
     public ResponseEntity<List<TurmaResponse>> findAll() {
         List<Turma> turmaList = turmaRepository.findAll();
 
-        return ResponseEntity.ok(turmaList.stream().map(TurmaMapper::toTurmaResponse).toList());
+        return ResponseEntity.ok(TurmaMapper.toResponseList(turmaList));
 
     }
 
@@ -84,11 +89,13 @@ public class TurmaController {
     public ResponseEntity<TurmaResponse> update(@PathVariable Long id, @Valid @RequestBody TurmaRequest request) {
 
         Optional<Turma> optionalTurma = turmaRepository.findById(id);
+        Professor professor = professorRepository.findById(request.professorId()).orElseThrow(()-> new ProfessorNãoEncontradoException("Professor não encontrado."));
 
         if (optionalTurma.isPresent()) {
 
             Turma turma = TurmaMapper.toTurma(request);
             turma.setId(id);
+            turma.setProfessor(professor);
             turmaRepository.save(turma);
 
             return ResponseEntity.ok(TurmaMapper.toTurmaResponse(turma));

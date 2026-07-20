@@ -29,24 +29,20 @@ public class ProfessorController {
 
     @GetMapping()
     public ResponseEntity<List<ProfessorResponse>> findAll() {
-        List<Professor> professor = professorService.findAll();
-        List<ProfessorResponse> getProfessor = ProfessorMapper.toProfessorResponse(professor).stream().toList();
+        List<ProfessorResponse> professor = professorService.findAll();
 
-        return ResponseEntity.ok(getProfessor);
+        return ResponseEntity.ok(professor);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<ProfessorResponse>> findById(@PathVariable Long id) {
+    public ResponseEntity<ProfessorResponse> findById(@PathVariable Long id) {
 
-        Optional<Professor> optProfessor = professorService.findById(id);
+        ProfessorResponse optProfessor = professorService.findById(id);
 
-        if (optProfessor.isPresent()) {
-            Optional<ProfessorResponse> getProfessor = optProfessor.map(ProfessorMapper::toProfessorResponse);
-            return ResponseEntity.ok(getProfessor);
+            return ResponseEntity.ok(optProfessor);
         }
 
-        return ResponseEntity.notFound().build();
-    }
+
 
     @PostMapping("/save")
     public ResponseEntity<ProfessorResponse> save(@Valid @RequestBody ProfessorRequest request) {
@@ -59,8 +55,8 @@ public class ProfessorController {
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        Optional<Professor> professor = professorService.findById(id);
-        if (professor.isPresent()) {
+        ProfessorResponse professor = professorService.findById(id);
+        if (professor != null) {
             professorService.delete(id);
 
             return ResponseEntity.noContent().build();
