@@ -2,6 +2,8 @@ package com.dev.kayo.JiujitsuAcademy.mapper;
 
 import com.dev.kayo.JiujitsuAcademy.entity.Turma;
 import com.dev.kayo.JiujitsuAcademy.request.TurmaRequest;
+import com.dev.kayo.JiujitsuAcademy.response.AlunoResumoResponse;
+import com.dev.kayo.JiujitsuAcademy.response.ProfessorResumoResponse;
 import com.dev.kayo.JiujitsuAcademy.response.TurmaResponse;
 
 import java.util.List;
@@ -20,21 +22,20 @@ public class TurmaMapper {
     }
 
     public static TurmaResponse toTurmaResponse(Turma turma) {
-
-        return TurmaResponse.builder()
-                .id(turma.getId())
-                .nome(turma.getNome())
-                .horarioFim(turma.getHorarioFim())
-                .capacidadeMaxima(turma.getCapacidadeMaxima())
-                .horarioInicio(turma.getHorarioInicio())
-                .professor(turma.getProfessor())
-                .diaSemana(turma.getDiaSemana())
-                .alunos(turma.getAlunos().stream()
-                        .map(AlunoMapper::toAlunoResponse)
-                        .toList())
-                .build();
-
+        return new TurmaResponse(
+                turma.getNome(),
+                turma.getId(),
+                turma.getHorarioInicio(),
+                turma.getHorarioFim(),
+                turma.getCapacidadeMaxima(),
+                turma.getDiaSemana(),
+                new ProfessorResumoResponse(turma.getProfessor().getNome(), turma.getProfessor().getFaixaAtual()),
+                turma.getAlunos().stream()
+                        .map(aluno -> new AlunoResumoResponse(aluno.getNome(), aluno.getFaixaAtual()))
+                        .toList()
+        );
     }
+
 
     public static List<TurmaResponse> toResponseList(List<Turma> turmas) {
 
