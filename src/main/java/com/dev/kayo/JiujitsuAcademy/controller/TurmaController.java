@@ -1,5 +1,6 @@
 package com.dev.kayo.JiujitsuAcademy.controller;
 
+import com.dev.kayo.JiujitsuAcademy.doc.TurmaControllerDocs;
 import com.dev.kayo.JiujitsuAcademy.entity.Professor;
 import com.dev.kayo.JiujitsuAcademy.entity.Turma;
 import com.dev.kayo.JiujitsuAcademy.exceptions.ProfessorNãoEncontradoException;
@@ -19,7 +20,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/turma")
-public class TurmaController {
+public class TurmaController implements TurmaControllerDocs {
 
     private final ProfessorRepository professorRepository;
     private final TurmaRepository turmaRepository;

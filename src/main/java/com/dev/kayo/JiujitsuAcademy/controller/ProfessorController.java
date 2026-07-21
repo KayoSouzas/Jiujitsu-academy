@@ -1,6 +1,7 @@
 package com.dev.kayo.JiujitsuAcademy.controller;
 
 
+import com.dev.kayo.JiujitsuAcademy.doc.ProfessorControllerDocs;
 import com.dev.kayo.JiujitsuAcademy.entity.Professor;
 import com.dev.kayo.JiujitsuAcademy.mapper.ProfessorMapper;
 import com.dev.kayo.JiujitsuAcademy.repository.ProfessorRepository;
@@ -17,7 +18,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("professor")
-public class ProfessorController {
+public class ProfessorController implements ProfessorControllerDocs {
 
     private final ProfessorService professorService;
     private final ProfessorRepository professorRepository;

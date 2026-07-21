@@ -1,5 +1,6 @@
 package com.dev.kayo.JiujitsuAcademy.controller;
 
+import com.dev.kayo.JiujitsuAcademy.doc.AuthControllerDocs;
 import com.dev.kayo.JiujitsuAcademy.repository.UserRepository;
 import com.dev.kayo.JiujitsuAcademy.request.LoginRequest;
 import com.dev.kayo.JiujitsuAcademy.request.RegisterRequest;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/auth")
-public class AuthController {
+public class AuthController implements AuthControllerDocs {
 
     private final AuthService authService;
 
